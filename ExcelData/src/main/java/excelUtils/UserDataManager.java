@@ -1,43 +1,37 @@
 package excelUtils;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class UserDataManager {
-	static FileInputStream fileIn;
-	static XSSFWorkbook workbook;
-	static FileOutputStream fileOut;
-	static FileOutputStream fileOutput;
-	public Scanner threads;
+public class UserDataManager extends ExcelCapabilities {
+	public int users;
 	static Logger logs;
-	UserDataManager(){
-		threads = new Scanner(System.in);
-		System.out.print("Enter Number of users for PACE Performance Test: ");
-		users = (threads.nextInt())*2;
+	UserDataManager(int users){
+		this.users = users;
 		logs = LogManager.getLogger(UserDataManager.class);
 	}
-	public static int users;
+	UserDataManager(UserDataManager u){
+		//Copy Constructor
+		this.users = u.users;
+	}
 	public static Map<String, String[]> data;
 	public static String[] values;
 	public static String[] key;
-	public static void createFile() throws IOException {
+	
+	public void createFile() throws IOException {
 		logs.info("Creating new Excel File......");
-		workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet("User Data");
+		ExcelCreate();
+		XSSFSheet sheet = workbook.createSheet("UserData");
 		//read from txt and make headers dynamic 
 		FileReader fileIn = new FileReader("./File/headers.txt");
 		BufferedReader read = new BufferedReader(fileIn);
@@ -54,18 +48,11 @@ public class UserDataManager {
 				cell.setCellValue(header[cellNum]);
 			}
 		}
-		fileOut = new FileOutputStream("./File/UserData.xlsx"); 
-		fileOutput = new FileOutputStream("C:\\apache-jmeter-5.5\\apache-jmeter-5.5\\bin\\TestData.xlsx");
-		workbook.write(fileOut);
-		workbook.write(fileOutput);
-		fileOut.close();
-		fileOutput.close();
-		workbook.close();
+		Destructor();
 		logs.info("Excel File has been created");
 	}
-	public static Map<String, String[]> getData(String filePath) throws IOException {
-		FileInputStream inBottler = new FileInputStream(filePath);
-		XSSFWorkbook workbook = new XSSFWorkbook(inBottler);
+	public void getBottlerData(String filePath) throws IOException {
+		ExcelInit(filePath);
 		XSSFSheet sheet1 = workbook.getSheetAt(0);
 		data = new HashMap<String, String[]>();
 		key = new String[sheet1.getLastRowNum()];
@@ -82,14 +69,11 @@ public class UserDataManager {
 			}
 			data.put(key[rowNum-1], values);
 		}
-		workbook.close();
-		inBottler.close();
-		return data;
+		inputDestructor();
 	}
-	public static void WriteUserData() throws IOException {
+	public void WriteUserData() throws IOException {
 		logs.info("Writing bottler data into the file.....");
-		fileIn = new FileInputStream("./File/UserData.xlsx");
-		workbook = new XSSFWorkbook(fileIn);
+		ExcelInit("./File/UserData.xlsx");
 		XSSFSheet sheet1 = workbook.getSheetAt(0);
 		//get the customerID's and print in excel column and use that column as key and get rest of the data 
 		//Print customerId's multiple times 
@@ -173,15 +157,8 @@ public class UserDataManager {
 				pullNumber++;
 			}			
 		}
-		fileOut = new FileOutputStream("./File/UserData.xlsx");
-		fileOutput = new FileOutputStream("C:\\apache-jmeter-5.5\\apache-jmeter-5.5\\bin\\TestData.xlsx");
-		workbook.write(fileOut);
-		workbook.write(fileOutput);
-		fileOutput.close();
-		fileOut.close();
-		workbook.close();
 		fileIn.close();
+		Destructor();
 		logs.info("Bottler Data written successfully");
 	}
 }
-//Global variables workbook, sheet, fileinput, fileout
