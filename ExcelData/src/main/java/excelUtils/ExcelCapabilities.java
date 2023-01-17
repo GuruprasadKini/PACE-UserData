@@ -3,7 +3,12 @@ package excelUtils;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
+import java.io.*;
+import com.opencsv.CSVWriter;
 
 public class ExcelCapabilities{
     XSSFWorkbook workbook;
@@ -21,10 +26,7 @@ public class ExcelCapabilities{
     
     public void Destructor() throws IOException{
         fileOut = new FileOutputStream("./File/UserData.xlsx");
-        fileOutput = new FileOutputStream("C:\\apache-jmeter-5.5\\apache-jmeter-5.5\\bin\\TestData.xlsx");
         workbook.write(fileOut);
-        workbook.write(fileOutput);
-        fileOutput.close();
         fileOut.close();
         workbook.close();
     }
@@ -33,4 +35,29 @@ public class ExcelCapabilities{
     	workbook.close();
     	fileIn.close();
     }
+     
+    public void excelToCSV() throws IOException {
+    	// Read the Excel file
+    	FileInputStream inputStream = new FileInputStream("./File/UserData.xlsx");
+    	workbook = new XSSFWorkbook(inputStream);
+    	XSSFSheet sheet = workbook.getSheetAt(0);
+
+    	// Create the CSV file
+    	FileWriter fileWriter = new FileWriter("C:\\apache-jmeter-5.5\\apache-jmeter-5.5\\bin\\TestData.csv");
+    	CSVWriter csvWriter = new CSVWriter(fileWriter);
+
+    	// Write the data from the Excel file to the CSV file
+    	for (Row row : sheet) {
+    		String[] data = new String[row.getLastCellNum()];
+    		for (int i = 0; i < row.getLastCellNum(); i++) {
+    			Cell cell = row.getCell(i);
+    			data[i] = cell.toString();
+    		}
+    		csvWriter.writeNext(data);
+    	}
+    	// Close the CSV file
+    	csvWriter.close();
+    }
+    
 }
+

@@ -101,10 +101,12 @@ public class UserDataManager extends ExcelCapabilities {
 			for (int cellNum = 0; cellNum <= 205; cellNum++) {
 				XSSFCell cell = row.createCell(cellNum);
 				switch (cellNum) {
+				//Writing WebAuthToken
 				case 0: {
 					cell.setCellValue(getAuth.WebToken);
 					break;
 				}
+				//Writing MobAuthToken
 				case 1: {
 					cell.setCellValue(getAuth.MobToken);
 					break;

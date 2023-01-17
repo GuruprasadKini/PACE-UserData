@@ -34,6 +34,8 @@ public class ExcelDataDriver {
 			productData.writeProductIds("./File/583349_4100_AMLProductIdList.xlsx");
 			Uuid uuid = new Uuid(users);
 			uuid.WriteUuid("./File/UserData.xlsx");
+			ExcelCapabilities excelCapabilities = new ExcelCapabilities();
+			excelCapabilities.excelToCSV();
 			threads.close();
 		}
 		catch(FileNotFoundException e){

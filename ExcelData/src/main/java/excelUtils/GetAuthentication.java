@@ -97,6 +97,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		String code = driver.getCurrentUrl().split("=")[1].split("&")[0];
 		driver.quit();
 		OkHttpClient client = new OkHttpClient().newBuilder().build();
+		@SuppressWarnings("unused")
 		MediaType mediaType = MediaType.parse("text/plain");
 		RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
 				.addFormDataPart("grant_type", "authorization_code")
@@ -116,7 +117,6 @@ public class GetAuthentication extends ExcelCapabilities {
 		JsonNode rootNode = mapper.readTree(responseBody.string());
 		JsonNode specificNode = rootNode.path("access_token");
 		MobToken = specificNode.toString().substring(1, specificNode.toString().length() - 1);
-		System.out.println(MobToken);
 		if (MobToken.isBlank() == false) {
 			logs.info("Successfully extracted Mob Authentication Token");
 		}
@@ -144,7 +144,6 @@ public class GetAuthentication extends ExcelCapabilities {
 				.visibilityOfElementLocated(By.xpath("//span[text()='Copy JWT to Clipboard']/parent::button")));
 		btn_clipboard.click();
 		WebToken = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-		System.out.println(WebToken);
 		if (WebToken.isBlank() == false) {
 			logs.info("Successfully extracted Web Authentication Token");
 		}
