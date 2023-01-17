@@ -43,6 +43,7 @@ public class PostToken extends ExcelImplications{
 		Map<String, String> hashMap = new TreeMap<String, String>();
 		for (int i = 0; i < array.length; i++) {
 			String p = array[i];
+			System.out.println(p);
 			String o[] = p.split(":");
 			hashMap.put(o[0], o[1]);
 		}
