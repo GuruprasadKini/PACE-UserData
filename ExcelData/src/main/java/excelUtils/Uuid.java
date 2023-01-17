@@ -20,7 +20,7 @@ public class Uuid extends ExcelCapabilities {
 		ExcelInit(filePath);
 		XSSFSheet sheet = workbook.getSheetAt(0);
 		int[] cellNum = {3,4,5,6,7,8,9,10,11,195,196};
-		for (int i = 1; i <= userDataManager.users; i++) {
+		for (int i = 1; i < userDataManager.users; i++) {
 			XSSFRow row = sheet.getRow(i);
 			if(row == null) {
 				row = sheet.createRow(i);

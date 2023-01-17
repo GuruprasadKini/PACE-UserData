@@ -1,5 +1,6 @@
 package excelUtils;
 
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -15,14 +16,14 @@ public class ExcelDataDriver {
 		System.out.print("Enter Number of users for PACE Performance Test: ");
 		int userNum = (threads.nextInt())*2;
 		try {
-			UserDataManager users = new UserDataManager(userNum);
+			UserDataManager users = new UserDataManager(userNum);	 
 			users.createFile();
 			users.getBottlerData("./File/662477_5000_AMLProductIdList.xlsx");
-			users.WriteUserData();
+			users.WriteUserData("./File/Florida_UserCredentials.xlsx");
 			users.getBottlerData("./File/583349_4100_AMLProductIdList.xlsx");
-			users.WriteUserData();
+			users.WriteUserData("./File/Canada_UserCredentials.xlsx");
 			users.getBottlerData("./File/681328_4200_AMLProductIdList.xlsx");
-			users.WriteUserData();
+			users.WriteUserData("./File/Swire_UserCredentials.xlsx");
 			ProductDataManager productData = new ProductDataManager(users);
 			productData.writeProductCondition();
 			productData.getProducts("./File/662477_5000_AMLProductIdList.xlsx");
@@ -42,6 +43,12 @@ public class ExcelDataDriver {
 			e.printStackTrace();
 		}
 		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		catch(UnsupportedFlavorException e) {
+			e.printStackTrace();
+		}
+		catch(InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
