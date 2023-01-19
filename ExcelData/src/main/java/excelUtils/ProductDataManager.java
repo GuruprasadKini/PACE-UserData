@@ -144,7 +144,6 @@ public class ProductDataManager extends ExcelCapabilities {
 
 	public void writeProductIds(String filePath) throws EncryptedDocumentException, IOException {
 		log.info("Writing Product IDs.....");
-
 		ExcelInit("./File/UserData.xlsx");
 		XSSFSheet sheet1 = workbook.getSheetAt(0);
 		userDataManager.getBottlerData(filePath);

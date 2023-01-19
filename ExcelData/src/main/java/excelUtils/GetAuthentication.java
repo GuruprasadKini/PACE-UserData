@@ -6,6 +6,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -17,12 +19,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -53,7 +58,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--start-maximized");
-		// options.addArguments("--headless");
+		options.addArguments("--headless");
 		driver = new ChromeDriver(options);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 		driver.get(URL);
@@ -117,7 +122,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		JsonNode rootNode = mapper.readTree(responseBody.string());
 		JsonNode specificNode = rootNode.path("access_token");
 		MobToken = specificNode.toString().substring(1, specificNode.toString().length() - 1);
-		if (MobToken.isBlank() == false) {
+		if (Objects.nonNull(MobToken)) {
 			logs.info("Successfully extracted Mob Authentication Token");
 		}
 	}
@@ -139,12 +144,13 @@ public class GetAuthentication extends ExcelCapabilities {
 		WebElement btn_yes = wait
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit']")));
 		btn_yes.click();
-		Thread.sleep(2000);
+		Thread.sleep(5000);
 		WebElement btn_clipboard = wait.until(ExpectedConditions
-				.visibilityOfElementLocated(By.xpath("//span[text()='Copy JWT to Clipboard']/parent::button")));
-		btn_clipboard.click();
+				.elementToBeClickable(By.xpath("//span[text()='Copy JWT to Clipboard']/parent::button")));
+		Actions actions = new Actions(driver);
+		actions.moveToElement(btn_clipboard).click().perform();
 		WebToken = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-		if (WebToken.isBlank() == false) {
+		if (Objects.nonNull(WebToken)) {
 			logs.info("Successfully extracted Web Authentication Token");
 		}
 		driver.quit();

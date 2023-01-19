@@ -51,6 +51,9 @@ public class ExcelCapabilities{
     		String[] data = new String[row.getLastCellNum()];
     		for (int i = 0; i < row.getLastCellNum(); i++) {
     			Cell cell = row.getCell(i);
+    			if(cell == null) {
+    				break;
+    			}
     			data[i] = cell.toString();
     		}
     		csvWriter.writeNext(data);

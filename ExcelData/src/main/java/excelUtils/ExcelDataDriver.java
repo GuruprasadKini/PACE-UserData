@@ -1,10 +1,6 @@
 package excelUtils;
 
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,8 +20,10 @@ public class ExcelDataDriver {
 			users.WriteUserData("./File/Canada_UserCredentials.xlsx");
 			users.getBottlerData("./File/681328_4200_AMLProductIdList.xlsx");
 			users.WriteUserData("./File/Swire_UserCredentials.xlsx");
+			//need to include Liberty as well
 			ProductDataManager productData = new ProductDataManager(users);
 			productData.writeProductCondition();
+			//change logic to include 4 bottlers and writing ProductCondition for 4 
 			productData.getProducts("./File/662477_5000_AMLProductIdList.xlsx");
 			productData.writeProductIds("./File/662477_5000_AMLProductIdList.xlsx");
 			productData.getProducts("./File/681328_4200_AMLProductIdList.xlsx");
@@ -38,19 +36,8 @@ public class ExcelDataDriver {
 			excelCapabilities.excelToCSV();
 			threads.close();
 		}
-		catch(FileNotFoundException e){
-			logs.info("The Excel File is open, please close the file");
-		}
-		catch(IOException e) {
-			e.printStackTrace();
-		}
-		catch(NullPointerException e) {
-			e.printStackTrace();
-		}
-		catch(UnsupportedFlavorException e) {
-			e.printStackTrace();
-		}
-		catch(InterruptedException e) {
+		catch(Exception e) {
+			// handle any exception that occurs
 			e.printStackTrace();
 		}
 	}
