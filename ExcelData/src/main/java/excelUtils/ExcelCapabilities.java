@@ -2,12 +2,15 @@ package excelUtils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import java.io.*;
+
 import com.opencsv.CSVWriter;
 
 public class ExcelCapabilities{
@@ -21,9 +24,9 @@ public class ExcelCapabilities{
     
     public void ExcelInit(String filePath) throws IOException{
         fileIn = new FileInputStream(filePath);
+        IOUtils.setByteArrayMaxOverride(Integer.MAX_VALUE);
         workbook = new XSSFWorkbook(fileIn);
     }
-    
     public void Destructor() throws IOException{
         fileOut = new FileOutputStream("./File/UserData.xlsx");
         workbook.write(fileOut);
@@ -63,4 +66,3 @@ public class ExcelCapabilities{
     }
     
 }
-

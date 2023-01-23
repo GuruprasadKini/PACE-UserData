@@ -19,7 +19,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -47,20 +46,20 @@ public class GetAuthentication extends ExcelCapabilities {
 
 	GetAuthentication() {
 		// Empty
-		logs = LogManager.getLogger(Uuid.class);
+		logs = LogManager.getLogger(GetAuthentication.class);
 	}
 
 	GetAuthentication(UserDataManager u) {
 		this.userDataManager = u;
-		logs = LogManager.getLogger(Uuid.class);
+		logs = LogManager.getLogger(GetAuthentication.class);
 	}
 	public void WebDriverActions(String URL, String username, String password) {
+		
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--start-maximized");
-		options.addArguments("--headless");
 		driver = new ChromeDriver(options);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		driver.get(URL);
 		// Enter Username
 		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='email']")));
@@ -79,7 +78,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		btn_nxt.click();
 		// Skip microsoft Authenticator setup
 		WebElement btn_skip = wait
-				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'Skip setup')]")));
+				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Skip setup']")));
 		btn_skip.click();
 	}
 	
@@ -144,11 +143,10 @@ public class GetAuthentication extends ExcelCapabilities {
 		WebElement btn_yes = wait
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit']")));
 		btn_yes.click();
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 		WebElement btn_clipboard = wait.until(ExpectedConditions
-				.elementToBeClickable(By.xpath("//span[text()='Copy JWT to Clipboard']/parent::button")));
-		Actions actions = new Actions(driver);
-		actions.moveToElement(btn_clipboard).click().perform();
+				.elementToBeClickable(By.xpath("(//button[contains(@class,'MuiButtonBase-root')])[3]")));
+		btn_clipboard.click();
 		WebToken = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
 		if (Objects.nonNull(WebToken)) {
 			logs.info("Successfully extracted Web Authentication Token");

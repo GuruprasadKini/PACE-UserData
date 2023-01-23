@@ -26,14 +26,10 @@ public class ExcelDataDriver {
 			//change logic to include 4 bottlers and writing ProductCondition for 4 
 			productData.getProducts("./File/662477_5000_AMLProductIdList.xlsx");
 			productData.writeProductIds("./File/662477_5000_AMLProductIdList.xlsx");
-			productData.getProducts("./File/681328_4200_AMLProductIdList.xlsx");
-			productData.writeProductIds("./File/681328_4200_AMLProductIdList.xlsx");
 			productData.getProducts("./File/583349_4100_AMLProductIdList.xlsx");
 			productData.writeProductIds("./File/583349_4100_AMLProductIdList.xlsx");
-			Uuid uuid = new Uuid(users);
-			uuid.WriteUuid("./File/UserData.xlsx");
-			ExcelCapabilities excelCapabilities = new ExcelCapabilities();
-			excelCapabilities.excelToCSV();
+			productData.getProducts("./File/681328_4200_AMLProductIdList.xlsx");
+			productData.writeProductIds("./File/681328_4200_AMLProductIdList.xlsx");
 			threads.close();
 		}
 		catch(Exception e) {
