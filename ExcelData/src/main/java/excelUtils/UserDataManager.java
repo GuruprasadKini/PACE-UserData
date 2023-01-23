@@ -84,7 +84,7 @@ public class UserDataManager extends ExcelCapabilities {
 		GetAuthentication getAuth = new GetAuthentication();
 		getAuth.getWebToken(UserCredentialsFile); 
 		getAuth.getMobToken(UserCredentialsFile);
-		logs.info("Writing bottler data into the file.....");
+		logs.info("Writing bottler data and UUIDs into the file.....");
 		ExcelInit("./File/UserData.xlsx");
 		XSSFSheet sheet1 = workbook.getSheetAt(0);
 		// get the customerID's and print in excel column and use that column as key and
@@ -114,7 +114,6 @@ public class UserDataManager extends ExcelCapabilities {
 			cell.setCellValue(data.get(key[index])[1]);
 			
 			//Writing UUID's
-			logs.info("Writing Unique IDs into file....");
 			for(int j = 0; j<11; j++) {
 				cell = row.getCell(cellNum[j]);
 				if(cell == null) {
@@ -124,7 +123,6 @@ public class UserDataManager extends ExcelCapabilities {
 				String a = uuid.toString();
 				cell.setCellValue(a);
 			}
-			logs.info("Unique IDs written successfully");
 			
 			cell = row.createCell(12);
 			cell.setCellValue(data.get(key[index])[2]);
@@ -177,6 +175,6 @@ public class UserDataManager extends ExcelCapabilities {
 		data.clear();
 		fileIn.close();
 		Destructor();
-		logs.info("Bottler Data written successfully");
+		logs.info("Bottler Data and UUIDs written successfully");
 	}
 }
