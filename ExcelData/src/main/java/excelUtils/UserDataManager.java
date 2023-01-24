@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -77,12 +79,12 @@ public class UserDataManager extends ExcelCapabilities {
 		}
 		inputDestructor();
 	}
-
+	
 	public void WriteUserData(String UserCredentialsFile) throws IOException, HeadlessException, UnsupportedFlavorException, InterruptedException {
 		GetAuthentication getAuth = new GetAuthentication();
 		getAuth.getWebToken(UserCredentialsFile); 
 		getAuth.getMobToken(UserCredentialsFile);
-		logs.info("Writing bottler data into the file.....");
+		logs.info("Writing bottler data and UUIDs into the file.....");
 		ExcelInit("./File/UserData.xlsx");
 		XSSFSheet sheet1 = workbook.getSheetAt(0);
 		// get the customerID's and print in excel column and use that column as key and
@@ -93,90 +95,86 @@ public class UserDataManager extends ExcelCapabilities {
 		int lastIndex = sheet1.getLastRowNum() + 1;
 		int pullNumber = 1;
 		int sequenceNumber = 1;
+		int[] cellNum = {3,4,5,6,7,8,9,10,11,195,196};
 		String[] userId = { "a11196bc-8191-435e-9428-85838d5cea08", "272cacfd-7d33-4c4b-9ff9-be046d2432ee",
 				"8cc858b2-5429-49f4-981c-2f1aa5f88304" };
-		int perBottlerUsers = Math.round(users / 3);
+		int perBottlerUsers = users / 3;
 		for (int rowNum = lastIndex; rowNum < lastIndex + perBottlerUsers; rowNum++) {
 			XSSFRow row = sheet1.createRow(rowNum);
-			for (int cellNum = 0; cellNum <= 205; cellNum++) {
-				XSSFCell cell = row.createCell(cellNum);
-				switch (cellNum) {
-				case 0: {
-					cell.setCellValue(getAuth.WebToken);
-					break;
+			XSSFCell cell;
+			//Writing WebAuthToken
+			cell = row.createCell(0);
+			cell.setCellValue(getAuth.WebToken);
+
+			//Writing MobAuthToken
+			cell = row.createCell(1);
+			cell.setCellValue(getAuth.MobToken);
+
+			cell = row.createCell(2);
+			cell.setCellValue(data.get(key[index])[1]);
+			
+			//Writing UUID's
+			for(int j = 0; j<11; j++) {
+				cell = row.getCell(cellNum[j]);
+				if(cell == null) {
+					cell = row.createCell(cellNum[j]);
 				}
-				case 1: {
-					cell.setCellValue(getAuth.MobToken);
-					break;
-				}
-				case 2: {
-					cell.setCellValue(data.get(key[index])[1]);
-					break;
-				}
-				case 12: {
-					cell.setCellValue(data.get(key[index])[2]);
-					break;
-				}
-				case 13: {
-					cell.setCellValue(key[index]);
-					break;
-				}
-				// Module 9:
-				case 197: {
-					cell.setCellValue(sequenceNumber++);
-					break;
-				}
-				// Module 10:
-				case 198: {
-					cell.setCellValue(pullNumber);
-					break;
-				}
-				// Module 11:
-				case 199: {
-					cell.setCellValue("PF" + rowNum);
-					break;
-				}
-				// Module 8:
-				case 200: {
-					if (data.get(key[index])[1].equals("5000")) {
-						cell.setCellValue(userId[0]);
-					} else if (data.get(key[index])[1].equals("4200")) {
-						cell.setCellValue(userId[1]);
-					} else {
-						cell.setCellValue(userId[2]);
-					}
-					break;
-				}
-				case 201: {
-					cell.setCellValue(data.get(key[index])[3]);
-					break;
-				}
-				case 202: {
-					cell.setCellValue(data.get(key[index])[4]);
-					break;
-				}
-				case 203: {
-					cell.setCellValue(data.get(key[index])[5]);
-					break;
-				}
-				case 204: {
-					cell.setCellValue(data.get(key[index])[6]);
-					break;
-				}
-				case 205: {
-					cell.setCellValue(data.get(key[index])[7]);
-					break;
-				}
-				}
+				UUID uuid = UUID.randomUUID();
+				String a = uuid.toString();
+				cell.setCellValue(a);
 			}
-			index++;
-			if (index >= key.length) {
-				index = 0;
-				pullNumber++;
+			
+			cell = row.createCell(12);
+			cell.setCellValue(data.get(key[index])[2]);
+
+			cell = row.createCell(13);
+			cell.setCellValue(key[index]);
+
+			// Module 9:
+			cell = row.createCell(197);
+			cell.setCellValue(sequenceNumber++);
+
+			// Module 10:
+			cell = row.createCell(198);
+			cell.setCellValue(pullNumber);
+
+			// Module 11:
+			cell = row.createCell(199);
+			cell.setCellValue("PF" + rowNum);
+
+			// Module 8:
+			cell = row.createCell(200);
+			if (data.get(key[index])[1].equals("5000")) {
+				cell.setCellValue(userId[0]);
+			} else if (data.get(key[index])[1].equals("4200")) {
+				cell.setCellValue(userId[1]);
+			} else {
+				cell.setCellValue(userId[2]);
 			}
+
+			cell = row.createCell(201);
+			cell.setCellValue(data.get(key[index])[3]);
+
+			cell = row.createCell(202);
+			cell.setCellValue(data.get(key[index])[4]);
+
+			cell = row.createCell(203);
+			cell.setCellValue(data.get(key[index])[5]);
+
+			cell = row.createCell(204);
+			cell.setCellValue(data.get(key[index])[6]);
+
+			cell = row.createCell(205);
+			cell.setCellValue(data.get(key[index])[7]);
+		index++;
+		if (index >= key.length) {
+			index = 0;
+			pullNumber++;
 		}
+		}
+		data.clear();
 		fileIn.close();
 		Destructor();
-		logs.info("Bottler Data written successfully");
+		logs.info("Bottler Data and UUIDs written successfully");
 	}
 }

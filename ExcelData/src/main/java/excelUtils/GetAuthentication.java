@@ -6,6 +6,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -19,10 +21,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -42,20 +46,20 @@ public class GetAuthentication extends ExcelCapabilities {
 
 	GetAuthentication() {
 		// Empty
-		logs = LogManager.getLogger(Uuid.class);
+		logs = LogManager.getLogger(GetAuthentication.class);
 	}
 
 	GetAuthentication(UserDataManager u) {
 		this.userDataManager = u;
-		logs = LogManager.getLogger(Uuid.class);
+		logs = LogManager.getLogger(GetAuthentication.class);
 	}
 	public void WebDriverActions(String URL, String username, String password) {
+		
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--start-maximized");
-		// options.addArguments("--headless");
 		driver = new ChromeDriver(options);
-		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		driver.get(URL);
 		// Enter Username
 		WebElement email = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@type='email']")));
@@ -74,7 +78,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		btn_nxt.click();
 		// Skip microsoft Authenticator setup
 		WebElement btn_skip = wait
-				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'Skip setup')]")));
+				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='Skip setup']")));
 		btn_skip.click();
 	}
 	
@@ -97,6 +101,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		String code = driver.getCurrentUrl().split("=")[1].split("&")[0];
 		driver.quit();
 		OkHttpClient client = new OkHttpClient().newBuilder().build();
+		@SuppressWarnings("unused")
 		MediaType mediaType = MediaType.parse("text/plain");
 		RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
 				.addFormDataPart("grant_type", "authorization_code")
@@ -116,8 +121,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		JsonNode rootNode = mapper.readTree(responseBody.string());
 		JsonNode specificNode = rootNode.path("access_token");
 		MobToken = specificNode.toString().substring(1, specificNode.toString().length() - 1);
-		System.out.println(MobToken);
-		if (MobToken.isBlank() == false) {
+		if (Objects.nonNull(MobToken)) {
 			logs.info("Successfully extracted Mob Authentication Token");
 		}
 	}
@@ -139,13 +143,12 @@ public class GetAuthentication extends ExcelCapabilities {
 		WebElement btn_yes = wait
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit']")));
 		btn_yes.click();
-		Thread.sleep(2000);
+		Thread.sleep(10000);
 		WebElement btn_clipboard = wait.until(ExpectedConditions
-				.visibilityOfElementLocated(By.xpath("//span[text()='Copy JWT to Clipboard']/parent::button")));
+				.elementToBeClickable(By.xpath("(//button[contains(@class,'MuiButtonBase-root')])[3]")));
 		btn_clipboard.click();
 		WebToken = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-		System.out.println(WebToken);
-		if (WebToken.isBlank() == false) {
+		if (Objects.nonNull(WebToken)) {
 			logs.info("Successfully extracted Web Authentication Token");
 		}
 		driver.quit();
