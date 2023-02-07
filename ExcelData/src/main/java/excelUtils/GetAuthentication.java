@@ -6,9 +6,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -46,12 +44,12 @@ public class GetAuthentication extends ExcelCapabilities {
 
 	GetAuthentication() {
 		// Empty
-		logs = LogManager.getLogger(GetAuthentication.class);
+//		logs = LogManager.getLogger(GetAuthentication.class);
 	}
 
 	GetAuthentication(UserDataManager u) {
 		this.userDataManager = u;
-		logs = LogManager.getLogger(GetAuthentication.class);
+//		logs = LogManager.getLogger(GetAuthentication.class);
 	}
 	public void WebDriverActions(String URL, String username, String password) {
 		
@@ -121,11 +119,11 @@ public class GetAuthentication extends ExcelCapabilities {
 		JsonNode rootNode = mapper.readTree(responseBody.string());
 		JsonNode specificNode = rootNode.path("access_token");
 		MobToken = specificNode.toString().substring(1, specificNode.toString().length() - 1);
-		if (Objects.nonNull(MobToken)) {
-			logs.info("Successfully extracted Mob Authentication Token");
+		if (MobToken.contains("eY")) {
+		System.out.println("Successfully extracted Mobile Authentication Token");
 		}
 	}
-
+	
 	public void getWebToken(String fileName) throws HeadlessException, UnsupportedFlavorException, IOException, InterruptedException {
 		ExcelInit(fileName);
 		XSSFSheet sheet = workbook.getSheet("Supervisor");
@@ -143,13 +141,12 @@ public class GetAuthentication extends ExcelCapabilities {
 		WebElement btn_yes = wait
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='submit']")));
 		btn_yes.click();
-		Thread.sleep(10000);
 		WebElement btn_clipboard = wait.until(ExpectedConditions
-				.elementToBeClickable(By.xpath("(//button[contains(@class,'MuiButtonBase-root')])[3]")));
+				.elementToBeClickable(By.xpath("//button[@class='MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary']")));
 		btn_clipboard.click();
 		WebToken = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-		if (Objects.nonNull(WebToken)) {
-			logs.info("Successfully extracted Web Authentication Token");
+		if (WebToken.contains("eY")) {
+			System.out.println("Successfully extracted Web Authentication Token");
 		}
 		driver.quit();
 	}

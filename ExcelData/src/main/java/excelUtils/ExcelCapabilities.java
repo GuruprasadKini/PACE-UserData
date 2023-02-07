@@ -2,16 +2,18 @@ package excelUtils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.opencsv.CSVWriter;
 
 public class ExcelCapabilities{
     XSSFWorkbook workbook;
@@ -23,10 +25,11 @@ public class ExcelCapabilities{
     }
     
     public void ExcelInit(String filePath) throws IOException{
+    	IOUtils.setByteArrayMaxOverride(Integer.MAX_VALUE);
         fileIn = new FileInputStream(filePath);
-        IOUtils.setByteArrayMaxOverride(Integer.MAX_VALUE);
         workbook = new XSSFWorkbook(fileIn);
     }
+    
     public void Destructor() throws IOException{
         fileOut = new FileOutputStream("./File/UserData.xlsx");
         workbook.write(fileOut);
@@ -38,31 +41,35 @@ public class ExcelCapabilities{
     	workbook.close();
     	fileIn.close();
     }
-     
-    public void excelToCSV() throws IOException {
-    	// Read the Excel file
-    	FileInputStream inputStream = new FileInputStream("./File/UserData.xlsx");
-    	workbook = new XSSFWorkbook(inputStream);
-    	XSSFSheet sheet = workbook.getSheetAt(0);
-
-    	// Create the CSV file
-    	FileWriter fileWriter = new FileWriter("C:\\apache-jmeter-5.5\\apache-jmeter-5.5\\bin\\TestData.csv");
-    	CSVWriter csvWriter = new CSVWriter(fileWriter);
-
-    	// Write the data from the Excel file to the CSV file
-    	for (Row row : sheet) {
-    		String[] data = new String[row.getLastCellNum()];
-    		for (int i = 0; i < row.getLastCellNum(); i++) {
-    			Cell cell = row.getCell(i);
-    			if(cell == null) {
-    				break;
-    			}
-    			data[i] = cell.toString();
-    		}
-    		csvWriter.writeNext(data);
-    	}
-    	// Close the CSV file
-    	csvWriter.close();
-    }
     
+    public void excelToCsv() throws IOException {
+    	fileIn = new FileInputStream("./File/UserData.xlsx");
+        workbook = new XSSFWorkbook(fileIn);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        fileIn.close();
+
+        // Write the CSV file
+        FileOutputStream fos = new FileOutputStream("C:\\apache-jmeter-5.5\\apache-jmeter-5.5\\bin\\TestData.csv");
+        OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+        PrintWriter pw = new PrintWriter(osw);
+        for (Row row : sheet) {
+        	  for (int i = 0; i < row.getLastCellNum(); i++) {
+        	    Cell cell = row.getCell(i);
+        	    if (cell == null) {
+        	      pw.print("");
+        	    } else if (cell.getCellType() == CellType.NUMERIC) {
+                    pw.print(cell.getNumericCellValue());
+                } else if (cell.getCellType() == CellType.STRING) {
+                  pw.print(cell.getStringCellValue());
+                }
+        	    pw.print(",");
+        	  }
+        	  pw.println();
+        	}
+            
+        pw.flush();
+        pw.close();
+        osw.close();
+        fos.close();
+    }
 }
