@@ -119,7 +119,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		JsonNode rootNode = mapper.readTree(responseBody.string());
 		JsonNode specificNode = rootNode.path("access_token");
 		MobToken = specificNode.toString().substring(1, specificNode.toString().length() - 1);
-		if (MobToken.contains("eY")) {
+		if (MobToken.contains("ey")) {
 		System.out.println("Successfully extracted Mobile Authentication Token");
 		}
 	}
@@ -145,7 +145,7 @@ public class GetAuthentication extends ExcelCapabilities {
 				.elementToBeClickable(By.xpath("//button[@class='MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary']")));
 		btn_clipboard.click();
 		WebToken = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-		if (WebToken.contains("eY")) {
+		if (WebToken.contains("ey")) {
 			System.out.println("Successfully extracted Web Authentication Token");
 		}
 		driver.quit();
