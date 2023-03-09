@@ -27,7 +27,7 @@ public class ProductDataManager extends ExcelCapabilities {
 		this.userDataManager = u;
 	}
 
-	public void writeProductCondition(int count) throws IOException {
+	public void writeProductCondition() throws IOException {
 //		log = LogManager.getLogger(ProductDataManager.class);
 //		log.info("Writing Product Condition.....");
 		ExcelInit("./File/UserData.xlsx");
@@ -35,6 +35,7 @@ public class ProductDataManager extends ExcelCapabilities {
 		productInfo = new ArrayListValuedHashMap<String, String>();
 		int lastIndex = index;
 		int perBottlerOrders = userDataManager.users/3;
+//		int countKeeper = perBottlerOrders*count;
 		DataFormatter formatter1 = new DataFormatter();
 		for (int i = index; i < perBottlerOrders + lastIndex; i++) {
 			index++;
@@ -52,26 +53,26 @@ public class ProductDataManager extends ExcelCapabilities {
 			}
 
 			int productCondition = 0;
-			if (i <= (int) Math.round((userDataManager.users * 0.4) / 3)) {
+			if (i <= lastIndex + (int) Math.round((perBottlerOrders * 0.4) / 3)) {
 				productCondition = 5;
-			} else if ((int) Math.round((userDataManager.users * 0.4) / 3) < i & i <= 2 * ((int) Math.round((userDataManager.users * 0.4) / 3))) {
+			} else if (lastIndex + (int) Math.round((perBottlerOrders * 0.4) / 3) < i & i <= lastIndex +  2 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
 				productCondition = 8;
-			} else if(2 * ((int) Math.round((userDataManager.users * 0.4) / 3)) < i & i <= 3 * ((int) Math.round((userDataManager.users * 0.4) / 3))){
+			} else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))){
 				productCondition = 10;
 			}
-			else if(3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) < i & i <= (int) Math.round((userDataManager.users * 0.5) / 3) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3))) {
+			else if(lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <=lastIndex +  (int) Math.round((perBottlerOrders * 0.5) / 3) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
 				productCondition = 40;
 			}
-			else if((int) Math.round((userDataManager.users * 0.5) / 3) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) < i & i <= 2 * ((int) Math.round((userDataManager.users * 0.5) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3))) {
+			else if(lastIndex + (int) Math.round((perBottlerOrders * 0.5) / 3) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
 				productCondition = 70;
 			}	
-			else if(2 * ((int) Math.round((userDataManager.users * 0.5) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) < i & i <= 3 * ((int) Math.round((userDataManager.users * 0.5) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3))) {
+			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
 				productCondition = 100;
 			}	
-			else if(3 * ((int) Math.round((userDataManager.users * 0.5) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) < i & i <= 3 * ((int) Math.round((userDataManager.users * 0.5) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) + ((int) Math.round((userDataManager.users * 0.1) / 2))) {
+			else if(3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + ((int) Math.round((perBottlerOrders * 0.1) / 2))) {
 				productCondition = 130;
 			}
-			else if(3 * ((int) Math.round((userDataManager.users * 0.5) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) + ((int) Math.round((userDataManager.users * 0.1) / 2)) < i & i <= 3 * ((int) Math.round((userDataManager.users * 0.8) / 3)) + 3 * ((int) Math.round((userDataManager.users * 0.4) / 3)) + 2 * ((int) Math.round((userDataManager.users * 0.1) / 2))) {
+			else if(lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + ((int) Math.round((perBottlerOrders * 0.1) / 2)) < i & i <=lastIndex +  3 * ((int) Math.round((perBottlerOrders * 0.8) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + 2 * ((int) Math.round((perBottlerOrders * 0.1) / 2))) {
 				productCondition = 160;
 			}
 			cell.setCellValue(productCondition);
