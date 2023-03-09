@@ -12,6 +12,7 @@ public class ExcelDataDriver {
 			userNum = 3;
 		}
 		try {
+			
 			UserDataManager users = new UserDataManager(userNum);
 			ProductDataManager productData = new ProductDataManager(users);
 			users.createFile();

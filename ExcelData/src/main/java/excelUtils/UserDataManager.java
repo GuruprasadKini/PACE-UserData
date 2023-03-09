@@ -127,35 +127,35 @@ public class UserDataManager extends ExcelCapabilities {
                 cell.setCellValue(key[index]);
                 
                 //Writing Sequence Number
-                cell = row.createCell(196);
+                cell = row.createCell(176);
                 cell.setCellValue(sequenceNumber++);
                 
                 //Writing Pull Number
-                cell = row.createCell(197);
+                cell = row.createCell(177);
                 cell.setCellValue(pullNumber);
                 
                 //Writing Form number
-                cell = row.createCell(198);
+                cell = row.createCell(178);
                 cell.setCellValue("PF" + rowNum);
                 
                 //Writing User ID
-                cell = row.createCell(199);
+                cell = row.createCell(179);
                 cell.setCellValue(botlerIdToUserId.get(data.get(key[index])[1]));
                 
                 //Writing 
-                cell = row.createCell(200);
+                cell = row.createCell(180);
                 cell.setCellValue(data.get(key[index])[3]);
                 
-                cell = row.createCell(201);
+                cell = row.createCell(181);
     			cell.setCellValue(data.get(key[index])[4]);
     
-    			cell = row.createCell(202);
+    			cell = row.createCell(182);
     			cell.setCellValue(data.get(key[index])[5]);
     
-    			cell = row.createCell(203);
+    			cell = row.createCell(183);
     			cell.setCellValue(data.get(key[index])[6]);
     
-    			cell = row.createCell(204);
+    			cell = row.createCell(184);
     			cell.setCellValue(data.get(key[index])[7]);
     			index++;
     			if (index >= key.length) {
@@ -174,7 +174,7 @@ public class UserDataManager extends ExcelCapabilities {
     }
 
     enum CellNum {
-    	CELL_2(2), CELL_3(3), CELL_4(4), CELL_5(5), CELL_6(6), CELL_7(7), CELL_8(8), CELL_9(9), CELL_10(10), CELL_194(194), CELL_195(195);
+    	CELL_2(2), CELL_3(3), CELL_4(4), CELL_5(5), CELL_6(6), CELL_7(7), CELL_8(8), CELL_9(9), CELL_10(10), CELL_194(174), CELL_195(175);
 
     	private int value;
 
