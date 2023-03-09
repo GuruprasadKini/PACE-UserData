@@ -7,7 +7,7 @@ public class ExcelDataDriver {
 	public static void main(String[] args) {
 		Scanner threads = new Scanner(System.in);
 		System.out.print("Enter number of virtual users for PACE Performance Test: ");
-		int userNum = (threads.nextInt()*8);
+		int userNum = (int)(threads.nextInt()*2.5);
 		if(userNum<3) {
 			userNum = 3;
 		}

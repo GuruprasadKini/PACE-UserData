@@ -1,4 +1,3 @@
-WebAuthToken
 MobAuthToken
 BottlerId
 CallScheduleId

@@ -44,12 +44,12 @@ public class ProductDataManager extends ExcelCapabilities {
 				row = sheet.createRow(i);
 			}
 
-			cell = row.getCell(13);
+			cell = row.getCell(12);
 			String customerId = formatter1.formatCellValue(cell).toString();
 
-			cell = row.getCell(14);
+			cell = row.getCell(13);
 			if (cell == null) {
-				cell = row.createCell(14);
+				cell = row.createCell(13);
 			}
 
 			int productCondition = 0;
@@ -145,7 +145,7 @@ public class ProductDataManager extends ExcelCapabilities {
 		        }
 		        List<String> firstNElementsList = ((List<String>) productIds.get(UserDataManager.key[i])).subList(0, productCount);
 		        for (int j = 0; j < productCount; j++) {
-		            cell = row.createCell(j + 15);
+		            cell = row.createCell(j + 14);
 		            cell.setCellValue(firstNElementsList.get(j));
 		        }
 		    }
