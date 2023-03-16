@@ -56,6 +56,7 @@ public class GetAuthentication extends ExcelCapabilities {
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--start-maximized");
+		options.addArguments("--remote-allow-origins=*");
 		driver = new ChromeDriver(options);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 		driver.get(URL);

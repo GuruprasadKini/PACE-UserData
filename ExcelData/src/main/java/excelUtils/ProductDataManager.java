@@ -51,29 +51,66 @@ public class ProductDataManager extends ExcelCapabilities {
 			if (cell == null) {
 				cell = row.createCell(13);
 			}
-
+			
 			int productCondition = 0;
-			if (i <= lastIndex + (int) Math.round((perBottlerOrders * 0.4) / 3)) {
-				productCondition = 5;
-			} else if (lastIndex + (int) Math.round((perBottlerOrders * 0.4) / 3) < i & i <= lastIndex +  2 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
-				productCondition = 8;
-			} else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))){
-				productCondition = 10;
-			}
-			else if(lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <=lastIndex +  (int) Math.round((perBottlerOrders * 0.5) / 3) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
-				productCondition = 40;
-			}
-			else if(lastIndex + (int) Math.round((perBottlerOrders * 0.5) / 3) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
-				productCondition = 70;
-			}	
-			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
+			// Line items till 40 (70:30)
+//			if(i <= lastIndex + (int) Math.round((perBottlerOrders * 0.7) / 3) ) {
+//				productCondition = 5;
+//			}
+//			else if (lastIndex + (int) Math.round((perBottlerOrders * 0.7) / 3) < i & i <= lastIndex +  2 * ((int) Math.round((perBottlerOrders * 0.7) / 3))) {
+//				productCondition = 8;
+//			}
+//			else if (lastIndex + (int) Math.round((perBottlerOrders * 0.7) / 3) < i & i <= lastIndex +  3 * ((int) Math.round((perBottlerOrders * 0.7) / 3))) {
+//				productCondition = 10;
+//			}
+//			else if (lastIndex + (int) Math.round((perBottlerOrders * 0.7) / 3) < i & i <= lastIndex +  3 * ((int) Math.round((perBottlerOrders * 0.7) / 3)) + ((int) Math.round(perBottlerOrders* 0.3))) {
+//				productCondition = 40;
+//			}
+			//Line items 5, 8, 10; 40, 70; 100, 130, 160 (40:50:10)
+//			if (i <= lastIndex + (int) Math.round((perBottlerOrders * 0.1) / 3)) {
+//				productCondition = 160;
+//			} else if (lastIndex + (int) Math.round((perBottlerOrders * 0.1) / 3) < i & i <= lastIndex +  2 * ((int) Math.round((perBottlerOrders * 0.1) / 3))) {
+//				productCondition = 130;
+//			} else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3))){
+//				productCondition = 100;
+//			}
+//			else if(lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) < i & i <=lastIndex +  (int) Math.round((perBottlerOrders * 0.5) / 2) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3))) {
+//				productCondition = 70;
+//			}
+//			else if(lastIndex + (int) Math.round((perBottlerOrders * 0.5) / 2) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3))) {
+//				productCondition = 40;
+//			}	
+//			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) + ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
+//				productCondition = 10;
+//			}	
+//			else if(((int) Math.round((perBottlerOrders * 0.4) / 3))+ 2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) + 2 * ((int) Math.round((perBottlerOrders * 0.4) / 3))) {
+//				productCondition = 8;
+//			}
+//			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) + 2 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex +  2 * ((int) Math.round((perBottlerOrders * 0.5) / 2)) + 3 * ((int) Math.round((perBottlerOrders * 0.1) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + 1) {
+//				productCondition = 5;
+//			}
+			//Line items 5, 8, 10; 40; 60, 80; 100, 120 (40:35:20:5)
+			if (i <= lastIndex + (int) Math.round((perBottlerOrders * 0.05) / 2)) {
+				productCondition = 120;
+			} else if (lastIndex + (int) Math.round((perBottlerOrders * 0.05) / 2) < i & i <= lastIndex +  2 * ((int) Math.round((perBottlerOrders * 0.05) / 2))) {
 				productCondition = 100;
-			}	
-			else if(3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) < i & i <= lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + ((int) Math.round((perBottlerOrders * 0.1) / 2))) {
-				productCondition = 130;
+			} else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + (int) Math.round((perBottlerOrders * 0.2) / 2)){
+				productCondition = 80;
 			}
-			else if(lastIndex + 3 * ((int) Math.round((perBottlerOrders * 0.5) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + ((int) Math.round((perBottlerOrders * 0.1) / 2)) < i & i <=lastIndex +  3 * ((int) Math.round((perBottlerOrders * 0.8) / 3)) + 3 * ((int) Math.round((perBottlerOrders * 0.4) / 3)) + 2 * ((int) Math.round((perBottlerOrders * 0.1) / 2))) {
-				productCondition = 160;
+			else if (lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + (int) Math.round((perBottlerOrders * 0.2) / 2) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2)) {
+				productCondition = 60;
+			}
+			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35))) {
+				productCondition = 40;
+			}	
+			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35)) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35)) + (int) Math.round((perBottlerOrders * 0.4) / 3)) {
+				productCondition = 10;
+			}	
+			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35)) + (int) Math.round((perBottlerOrders * 0.4) / 3) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35)) + 2 * (int) Math.round((perBottlerOrders * 0.4) / 3)) {
+				productCondition = 8;
+			}
+			else if(lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35)) + 2* (int) Math.round((perBottlerOrders * 0.4) / 3) < i & i <= lastIndex + 2 * ((int) Math.round((perBottlerOrders * 0.05) / 2)) + 2 * (int) Math.round((perBottlerOrders * 0.2) / 2) + (int) Math.round((perBottlerOrders * 0.35)) + 3 * (int) Math.round((perBottlerOrders * 0.4) / 3) + 1) {
+				productCondition = 5;
 			}
 			cell.setCellValue(productCondition);
 			productInfo.put(customerId, i + "-" + productCondition);
